@@ -1,0 +1,24 @@
+{
+  "judge_config": {
+    "time_limit": 1024,
+    "memory_limit": 1024
+  },
+
+  "judge_cases": [
+    {
+      "input": "1 2",
+      "output": "3"
+    },
+    {
+      "input": "2 3",
+      "output": "5"
+    }
+  ],
+
+  "judge_info": {
+    "result": 0,
+    "error": "",
+    "use_time": 1000,
+    "use_memory": 256
+  }
+}

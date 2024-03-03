@@ -1,0 +1,29 @@
+{
+  "name": "oj_front",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kangc/v-md-editor": "^2.3.18",
+    "axios": "^1.6.7",
+    "element-plus": "^2.5.5",
+    "monaco-editor": "^0.46.0",
+    "pinia": "^2.1.7",
+    "vite-plugin-monaco-editor": "^1.1.0",
+    "vue": "^3.3.11",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "openapi-typescript-codegen": "^0.27.0",
+    "swagger-typescript-api": "^13.0.3",
+    "unplugin-auto-import": "^0.17.5",
+    "unplugin-vue-components": "^0.26.0",
+    "vite": "^5.1.1",
+    "vite-plugin-swagger-typescript-api": "^1.0.0"
+  }
+}
