@@ -1,6 +1,5 @@
 package com.cjj.coj.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cjj.coj.common.ResultBody;
 import com.cjj.coj.mapper.CommentMapper;
 import com.cjj.coj.modle.dto.comment.CommentDto;

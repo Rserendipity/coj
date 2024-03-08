@@ -1,7 +1,7 @@
 <script setup>
 import OjHeader from "@/compoment/COJ_Header.vue";
 import Container from "@/compoment/Container.vue";
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
 
 const route = useRoute();
 

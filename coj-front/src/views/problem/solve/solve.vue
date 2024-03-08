@@ -1,7 +1,7 @@
 <script setup>
 import Description from "@/views/problem/solve/compoment/descripe/index.vue";
 import CodeEditor from "@/views/problem/solve/compoment/code/CodeEditor.vue";
-import {ref, onMounted} from "vue";
+import {onMounted, ref} from "vue";
 
 const desc = ref();
 const bar = ref();
