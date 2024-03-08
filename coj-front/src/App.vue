@@ -6,6 +6,7 @@ import checkAccess from "./common/checkAccess";
 import {getUserInfoAPI} from "@/apis/user";
 import httpInstance from "./utils/httpInstance";
 import {useRoute} from "vue-router";
+import 'md-editor-v3/lib/style.css';
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -67,5 +68,8 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
-
+/* markdown编辑器样式，去掉padding */
+.md-editor-preview-wrapper {
+  padding: 0 !important;
+}
 </style>

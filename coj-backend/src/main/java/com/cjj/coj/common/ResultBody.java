@@ -23,14 +23,14 @@ public class ResultBody {
     }
 
     public static ResultBody success(Object object) {
-        return new ResultBody(ReturnCode.SUCCESS.getCode(), ReturnCode.SUCCESS.getMessage(), object);
+        return new ResultBody(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage(), object);
     }
 
-    public static ResultBody fail(ReturnCode code) {
+    public static ResultBody fail(ReturnCodeEnum code) {
         return fail(code, null);
     }
 
-    public static ResultBody fail(ReturnCode code, Object data) {
+    public static ResultBody fail(ReturnCodeEnum code, Object data) {
         return new ResultBody(code.getCode(), code.getMessage(), data);
     }
 

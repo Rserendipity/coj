@@ -7,5 +7,10 @@ export const useSystemStore = defineStore('system', () => {
         question: false,
     });
 
-    return {loading};
+    // 详情页面
+    const detail = ref({
+        question: false,
+    });
+
+    return {loading, detail};
 })

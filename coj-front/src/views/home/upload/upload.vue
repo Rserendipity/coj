@@ -5,6 +5,7 @@ import {getProblemDetailAPI, updateQuestionAPI} from "@/apis/problem";
 import {useRoute} from 'vue-router';
 import router from "@/router";
 import {useUserStore} from "@/stores/user";
+import {MdEditor} from "md-editor-v3";
 
 const userStore = useUserStore();
 
@@ -123,7 +124,8 @@ const btnView = computed(() => {
       </el-form-item>
 
       <el-form-item label="描 述" label-width="70px">
-        <v-md-editor v-model="question.description" height="400px" class="shadow"/>
+          <MdEditor v-model="question.description" preview-theme="vuepress" class="shadow"  :footers="[]"/>
+<!--        <v-md-editor v-model="" height="400px" class="shadow"/>-->
       </el-form-item>
 
       <el-form-item label="资源限制" label-width="70px">

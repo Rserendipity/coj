@@ -1,7 +1,7 @@
 package com.cjj.coj.exception;
 
 import com.cjj.coj.common.ResultBody;
-import com.cjj.coj.common.ReturnCode;
+import com.cjj.coj.common.ReturnCodeEnum;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,6 +11,6 @@ public class GlobeExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResultBody exceptionHandler(Exception e) {
         e.printStackTrace();
-        return ResultBody.fail(ReturnCode.SERVICE_ERROR);
+        return ResultBody.fail(ReturnCodeEnum.SERVICE_ERROR);
     }
 }

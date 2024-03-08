@@ -95,7 +95,7 @@ const autoLoginFunc = () => {
     <div class="main">
       <el-form :model="userinfo" :rules="rules" label-width="0px">
         <el-text type="primary">
-          <h1>C-OnlineJudge</h1>
+          <h1>Code-Online-Judge</h1>
         </el-text>
 
         <el-form-item label="" prop="account">

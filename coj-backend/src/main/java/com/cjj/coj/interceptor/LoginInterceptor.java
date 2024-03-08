@@ -2,7 +2,7 @@ package com.cjj.coj.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.cjj.coj.common.ResultBody;
-import com.cjj.coj.common.ReturnCode;
+import com.cjj.coj.common.ReturnCodeEnum;
 import com.cjj.coj.modle.entity.User;
 import com.cjj.coj.utils.JwtUtil;
 import com.cjj.coj.utils.ThreadLocalUtil;
@@ -28,7 +28,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             log.warn(request.getRequestURI() + "未携带令牌");
             response.setContentType("application/json; charset=utf-8");
-            String s = JSON.toJSONString(ResultBody.fail(ReturnCode.JWT_INVALID));
+            String s = JSON.toJSONString(ResultBody.fail(ReturnCodeEnum.JWT_INVALID));
             response.getWriter().write(s);
             return false;
         }

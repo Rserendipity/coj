@@ -3,9 +3,9 @@
 import COJ_Header from "@/compoment/COJ_Header.vue";
 import Container from "@/compoment/Container.vue";
 
-import { ref, reactive } from "vue";
-import { getUserInfoAPI, updateUserInfoAPI, updatePasswordAPI } from "@/apis/user";
-import { useUserStore } from "@/stores/user";
+import {reactive, ref} from "vue";
+import {getUserInfoAPI, updatePasswordAPI, updateUserInfoAPI} from "@/apis/user";
+import {useUserStore} from "@/stores/user";
 import roleEnum from "@/common/roleEnum";
 import httpInstance from "@/utils/httpInstance";
 import router from "@/router";
@@ -111,7 +111,7 @@ const rules = reactive({
           </el-form-item>
 
           <el-form-item label="昵称">
-            <el-input v-model="form.nickname" @keyup.enter.native="submit" maxlength="10" show-word-limit></el-input>
+            <el-input v-model="form.nickname" @keyup.enter.native="submit" maxlength="15" show-word-limit></el-input>
           </el-form-item>
 
           <el-form-item>

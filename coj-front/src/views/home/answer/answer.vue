@@ -1,9 +1,10 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { useRoute } from "vue-router";
-import { getProblemAnswerAPI, uploadProblemAnswerAPI } from "@/apis/problem";
-import { useProblemStore } from '@/stores/problem';
+import {computed, ref} from 'vue';
+import {useRoute} from "vue-router";
+import {getProblemAnswerAPI, uploadProblemAnswerAPI} from "@/apis/problem";
+import {useProblemStore} from '@/stores/problem';
 import router from "@/router";
+import {MdEditor} from "md-editor-v3";
 
 const route = useRoute();
 const code = ref("");
@@ -49,7 +50,7 @@ const submit = () => {
       </el-col>
     </el-row>
     <el-row style="padding: 20px">
-      <v-md-editor v-model="code" placeholder="输入参考答案..." />
+      <MdEditor v-model="code" placeholder="请输入题解..." preview-theme="vuepress"/>
     </el-row>
     <el-row>
       <el-button type="primary" @click="submit">提 交</el-button>
@@ -67,7 +68,7 @@ const submit = () => {
 }
 
 .el-button {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: auto;
 }
 </style>

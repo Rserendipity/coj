@@ -3,7 +3,7 @@ package com.cjj.coj.common;
 import lombok.Getter;
 
 @Getter
-public enum ReturnCode {
+public enum ReturnCodeEnum {
     SUCCESS(0, "操作成功"),
     PARAMETER_MISS(1001, "缺少参数"),
 
@@ -19,16 +19,20 @@ public enum ReturnCode {
     // 题目
     QUESTION_NOT_EXIST(3000, "题目不存在"),
 
+    // 提交
+    SUBMIT_NOT_EXIST(4000, "提交记录不存在"),
+    SUBMIT_PENDING(4001, "等待判题中"),
+    SUBMIT_JUDGING(4002, "正在判题中"),
+
     // Jwt无效
-    JWT_INVALID(4000, "Jwt无效"),
+    JWT_INVALID(5000, "Jwt无效"),
 
     // 服务器内部问题
-    SERVICE_ERROR(5000, "服务器出现问题，请联系管理员"),
-    SERVICE_FILE_NOT_EXIST(5001, "服务器文件不存在"),;
+    SERVICE_ERROR(6000, "服务器出现问题，请联系管理员"),
+    SERVICE_FILE_NOT_EXIST(6001, "服务器文件不存在"), ;
 
 
-
-    ReturnCode(int code, String message) {
+    ReturnCodeEnum(int code, String message) {
         this.code = code;
         this.message = message;
     }

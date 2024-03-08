@@ -5,7 +5,7 @@ import {useSystemStore} from "@/stores/system";
 import {useProblemStore} from "@/stores/problem";
 import roleEnum from "@/common/roleEnum";
 import {deleteProblemAPI, getProblemListAPI} from "@/apis/problem";
-import {ref, onMounted, onUnmounted} from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
 
 const userStore = useUserStore();
 const useProblem = useProblemStore();
@@ -85,11 +85,43 @@ onUnmounted(() => {
   systemStore.loading.question = false;
 })
 
+const search = ref({
+  value: "",
+  type: "problem",
+});
+
+const problemView = computed(() => {
+  return useProblem.problems.filter(item => {
+    if (search.value.value === "") {
+      return true;
+    }
+    if (search.value.type === "problem") {
+      return item.title.indexOf(search.value.value) !== -1;
+    } else {
+      return item.tags.some(tag =>
+        tag.includes(search.value.value)
+      )
+    }
+  })
+})
+
 </script>
 
 <template>
-  <el-scrollbar v-loading="systemStore.loading.question" element-loading-text="题目加载中，请耐心等待...">
-    <el-table :data="useProblem.problems" stripe style="width: 100%" >
+  <el-row class="search">
+    <el-input placeholder="输入筛选名..." v-model="search.value" clearable>
+      <template #prefix>
+        <i class="iconfont icon-search" />
+      </template>
+    </el-input>
+    <el-radio-group v-model="search.type" label="label position">
+      <el-radio-button label="problem">题目名</el-radio-button>
+      <el-radio-button label="tags">标签名</el-radio-button>
+    </el-radio-group>
+  </el-row>
+
+  <el-scrollbar v-loading="systemStore.loading.question" element-loading-text="题目加载中，请耐心等待..." class="table">
+    <el-table :data="problemView" stripe style="width: 100%">
       <template #empty>
         <el-empty description="没有题目...请联系管理员添加题目">
         </el-empty>
@@ -130,7 +162,7 @@ onUnmounted(() => {
       </el-table-column>
 
 
-      <el-table-column v-if="userStore.userinfo.role === roleEnum.ADMIN" label="管理" min-width="50">
+      <el-table-column v-if="userStore.userinfo.role === roleEnum.ADMIN" label="管理" min-width="300">
         <template #default="{ row }">
           <el-button size="small" type="primary" @click="modify(row.id)">修改</el-button>
           <el-button size="small" type="primary" @click="answer(row.id)">题解</el-button>
@@ -142,7 +174,6 @@ onUnmounted(() => {
         </template>
       </el-table-column>
     </el-table>
-
   </el-scrollbar>
 </template>
 
@@ -151,4 +182,19 @@ onUnmounted(() => {
 .el-tag {
   margin-right: 10px;
 }
+
+.table {
+  height: calc(100% - 50px);
+}
+
+.search {
+  height: 50px;
+  padding: 10px;
+}
+
+.search .el-input {
+  width: 200px;
+  margin-right: 10px;
+}
+
 </style>

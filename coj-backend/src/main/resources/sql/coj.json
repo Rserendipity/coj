@@ -16,9 +16,11 @@
   ],
 
   "judge_info": {
-    "result": 0,
-    "error": "",
-    "use_time": 1000,
-    "use_memory": 256
+    "code": 0,
+    "message": "AC / WA / RE / TLE / MLE / OLE / CE / SE / RE",
+    "stdout": "xxx",
+    "stderr": "xxx",
+    "use_time": 652,
+    "use_memory": 102
   }
 }

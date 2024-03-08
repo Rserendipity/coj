@@ -4,11 +4,10 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/coj?useUnicode=true&characterEncoding=utf-8
-    username: "cjj"
-    password: "Cjj020427@"
+    username: "cjj" # 替换为你的数据库用户名
+    password: "Cjj020427@" # 替换为你的数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-
   mvc:
     path match:
       matching-strategy: ant_path_matcher

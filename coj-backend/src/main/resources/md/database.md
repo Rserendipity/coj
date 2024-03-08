@@ -9,8 +9,7 @@ use coj;
 # json格式的字段，查看下面的json
 create table comments
 (
-    id          bigint auto_increment
-        primary key,
+    id          bigint auto_increment primary key,
     user_id     bigint    null,
     problem_id  bigint    null,
     content     text      null,
@@ -26,7 +25,7 @@ create table problem
     level        varchar(10)  null comment '难度',
     description  text         null comment 'MD格式的描述',
     answer       text         null comment 'MD格式的题解',
-    tags         varchar(255) null comment 'Json格式字符串',
+    tags         varchar(255) null comment 'Json格式数组',
     pass         int          null comment '通过数',
     judge_config text         null comment 'Json格式的判题配置',
     judge_cases  text         null comment 'Json格式的判题样例',
@@ -78,17 +77,15 @@ Json格式的字段
     {
       "input": "2 3",
       "output": "5"
-    },
-    ...
+    }
   ],
 
   "judge_info": {
-    "result": 0,
+    "state": 0,
     "message": "",
-    "stdout": "",
     "stderr": "",
-    "use_time": 652, // ms
-    "use_memory": 102 // kb
+    "useTime": 652,
+    "useMemory": 102
   }
 }
 ```

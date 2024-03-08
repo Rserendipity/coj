@@ -1,8 +1,8 @@
 <script setup>
-import { reactive, ref } from "vue";
+import {reactive, ref} from "vue";
 import router from "@/router/index.js";
-import { loginAPI } from "@/apis/user.js";
-import { useUserStore } from "@/stores/user.js";
+import {loginAPI} from "@/apis/user.js";
+import {useUserStore} from "@/stores/user.js";
 import httpInstance from "@/utils/httpInstance";
 
 const userStore = useUserStore();
@@ -71,7 +71,7 @@ const login = () => {
     <div class="main">
       <el-form :model="userinfo" :rules="rules" label-width="0px">
         <el-text type="primary">
-          <h1>C-OnlineJudge</h1>
+          <h1>Code-Online-Judge</h1>
         </el-text>
 
         <el-form-item label="" prop="account">

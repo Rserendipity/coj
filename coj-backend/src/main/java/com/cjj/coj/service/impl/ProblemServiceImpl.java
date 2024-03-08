@@ -3,7 +3,7 @@ package com.cjj.coj.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cjj.coj.common.ResultBody;
-import com.cjj.coj.common.ReturnCode;
+import com.cjj.coj.common.ReturnCodeEnum;
 import com.cjj.coj.mapper.ProblemMapper;
 import com.cjj.coj.modle.dto.problem.ProblemAnswerDto;
 import com.cjj.coj.modle.dto.problem.UploadProblemDto;
@@ -53,7 +53,7 @@ public class ProblemServiceImpl implements ProblemService {
 
         Problem problem = problemMapper.selectOne(wrapper);
         if (problem == null) {
-            return ResultBody.fail(ReturnCode.QUESTION_NOT_EXIST);
+            return ResultBody.fail(ReturnCodeEnum.QUESTION_NOT_EXIST);
         }
 
         return ResultBody.success(new ProblemQueryOneVo(problem));
@@ -63,7 +63,7 @@ public class ProblemServiceImpl implements ProblemService {
     public ResultBody getProblemDetailForAdmin(Long id) {
         Problem problem = problemMapper.selectById(id);
         if (problem == null) {
-            return ResultBody.fail(ReturnCode.QUESTION_NOT_EXIST);
+            return ResultBody.fail(ReturnCodeEnum.QUESTION_NOT_EXIST);
         }
 
         return ResultBody.success(new ProblemQueryOneAdminVo(problem));
@@ -77,7 +77,7 @@ public class ProblemServiceImpl implements ProblemService {
 
         int insert = problemMapper.insert(problem);
         if (insert != 1) {
-            return ResultBody.fail(ReturnCode.SERVICE_ERROR);
+            return ResultBody.fail(ReturnCodeEnum.SERVICE_ERROR);
         }
 
         return ResultBody.success();
@@ -87,7 +87,7 @@ public class ProblemServiceImpl implements ProblemService {
     public ResultBody editProblem(UploadProblemDto dto, Long id) {
         Problem problem = problemMapper.selectById(id);
         if (problem == null) {
-            return ResultBody.fail(ReturnCode.QUESTION_NOT_EXIST);
+            return ResultBody.fail(ReturnCodeEnum.QUESTION_NOT_EXIST);
         }
 
         DtoToEntity(dto, problem);
@@ -95,7 +95,7 @@ public class ProblemServiceImpl implements ProblemService {
         int row = problemMapper.updateById(problem);
 
         if (row != 1) {
-            return ResultBody.fail(ReturnCode.SERVICE_ERROR);
+            return ResultBody.fail(ReturnCodeEnum.SERVICE_ERROR);
         }
 
         return ResultBody.success();
@@ -105,7 +105,7 @@ public class ProblemServiceImpl implements ProblemService {
     public ResultBody deleteProblem(Long id) {
         int row = problemMapper.deleteById(id);
         if (row != 1) {
-            return ResultBody.fail(ReturnCode.QUESTION_NOT_EXIST);
+            return ResultBody.fail(ReturnCodeEnum.QUESTION_NOT_EXIST);
         }
         return ResultBody.success();
     }
@@ -114,7 +114,7 @@ public class ProblemServiceImpl implements ProblemService {
     public ResultBody getAnswer(Long id) {
         Problem problem = problemMapper.selectById(id);
         if (problem == null) {
-            return ResultBody.fail(ReturnCode.QUESTION_NOT_EXIST);
+            return ResultBody.fail(ReturnCodeEnum.QUESTION_NOT_EXIST);
         }
         return ResultBody.success(problem.getAnswer());
     }
@@ -123,7 +123,7 @@ public class ProblemServiceImpl implements ProblemService {
     public ResultBody submitAnswer(ProblemAnswerDto answer) {
         Problem problem = problemMapper.selectById(answer.getId());
         if (problem == null) {
-            return ResultBody.fail(ReturnCode.QUESTION_NOT_EXIST);
+            return ResultBody.fail(ReturnCodeEnum.QUESTION_NOT_EXIST);
         }
         problem.setAnswer(answer.getAnswer());
         problemMapper.updateById(problem);

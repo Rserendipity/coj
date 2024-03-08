@@ -29,8 +29,8 @@ const userNameView = computed(() => {
   } else {
     name = userStore.userinfo.account;
   }
-  if (name.length > 10) {
-    return name.slice(0, 10) + "...";
+  if (name.length > 15) {
+    return name.slice(0, 15) + "...";
   } else {
     return name;
   }

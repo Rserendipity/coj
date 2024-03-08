@@ -1,7 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { getProblemDetailAPI } from "@/apis/problem";
-import { useRoute } from "vue-router";
+import {computed, ref} from 'vue';
+import {getProblemDetailAPI} from "@/apis/problem";
+import {useRoute} from "vue-router";
+import {MdPreview} from "md-editor-v3";
 
 const route = useRoute();
 
@@ -49,7 +50,7 @@ getProblemDetailAPI(route.query.id).then(({ data }) => {
 
   <el-row class="md">
     <el-scrollbar>
-      <v-md-preview :text="problem?.description" />
+      <MdPreview :modelValue="problem?.description" preview-theme="vuepress" />
     </el-scrollbar>
   </el-row>
 
@@ -103,11 +104,18 @@ getProblemDetailAPI(route.query.id).then(({ data }) => {
 }
 
 .md {
+  width: 100%;
   height: calc(100vh - 300px);
   overflow: auto;
+}
+
+.md .el-scrollbar {
+  width: 100%;
 }
 
 .limit {
   padding: 10px;
 }
+
+
 </style>

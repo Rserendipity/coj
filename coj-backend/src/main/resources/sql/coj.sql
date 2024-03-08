@@ -47,3 +47,6 @@ create table submission
     index idx_user_id (user_id)
 );
 
+insert into user values (1,'admin','管理员','4ad038f69417e59b34a6f753a002c31f','783b8e9cb50b4c789e027eec8e7f5909',null,'admin');
+
+

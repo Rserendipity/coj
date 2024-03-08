@@ -2,6 +2,7 @@
 import {ref} from 'vue';
 import {getProblemAnswerAPI} from "@/apis/problem";
 import {useRoute} from "vue-router";
+import {MdPreview} from "md-editor-v3";
 
 const code = ref("");
 const route = useRoute();
@@ -16,14 +17,10 @@ getProblemAnswerAPI(route.query.id).then(({data}) => {
 </script>
 
 <template>
-  <el-empty v-if="code.length===0">
-    <template #description>
-      <el-text>暂无题解</el-text>
-    </template>
-  </el-empty>
+  <el-empty v-if="code.length===0" description="暂无题解"/>
   <el-scrollbar class="box">
     <div style="calc(100vh - 120px)">
-      <v-md-preview :text="code"/>
+      <MdPreview :modelValue="code" preview-theme="vuepress" :toolbars="[]"/>
     </div>
   </el-scrollbar>
 

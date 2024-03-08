@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cjj.coj.common.Constants;
 import com.cjj.coj.common.ResultBody;
-import com.cjj.coj.common.ReturnCode;
+import com.cjj.coj.common.ReturnCodeEnum;
 import com.cjj.coj.mapper.UserMapper;
 import com.cjj.coj.modle.dto.user.UserLoginDto;
 import com.cjj.coj.modle.dto.user.UserRegisterDto;
@@ -38,12 +38,12 @@ public class UserServiceImpl implements UserService {
     public ResultBody login(UserLoginDto dto) {
         // 确认dto非空
         if (!StringUtils.hasLength(dto.getAccount()) || !StringUtils.hasLength(dto.getPassword())) {
-            return ResultBody.fail(ReturnCode.PARAMETER_MISS);
+            return ResultBody.fail(ReturnCodeEnum.PARAMETER_MISS);
         }
 
         // 检查账号密码长度
         if (!checkUserInfoLength(dto.getAccount(), dto.getPassword())) {
-            return ResultBody.fail(ReturnCode.USER_INFO_ILLEGAL);
+            return ResultBody.fail(ReturnCodeEnum.USER_INFO_ILLEGAL);
         }
 
         // 查询用户
@@ -51,12 +51,12 @@ public class UserServiceImpl implements UserService {
 
         // 用户不存在
         if (user == null) {
-            return ResultBody.fail(ReturnCode.USER_INFO_ERROR);
+            return ResultBody.fail(ReturnCodeEnum.USER_INFO_ERROR);
         }
 
         // 确认密码
         if (!UserPasswordUtil.checkPassword(dto.getPassword(), user.getSalt(), user.getPassword())) {
-            return ResultBody.fail(ReturnCode.USER_INFO_ERROR);
+            return ResultBody.fail(ReturnCodeEnum.USER_INFO_ERROR);
         }
 
         // 使用jwt令牌
@@ -74,18 +74,18 @@ public class UserServiceImpl implements UserService {
     public ResultBody register(UserRegisterDto dto) {
         // 确认dto非空
         if (!StringUtils.hasLength(dto.getAccount()) || !StringUtils.hasLength(dto.getPassword()) || !StringUtils.hasLength(dto.getConfirmPass())) {
-            return ResultBody.fail(ReturnCode.PARAMETER_MISS);
+            return ResultBody.fail(ReturnCodeEnum.PARAMETER_MISS);
         }
 
         // 检查密码长度
         if (!checkUserInfoLength(dto.getAccount(), dto.getPassword())) {
-            return ResultBody.fail(ReturnCode.USER_INFO_ILLEGAL);
+            return ResultBody.fail(ReturnCodeEnum.USER_INFO_ILLEGAL);
         }
 
         // 用户已存在
         Long count = userMapper.selectCount(new QueryWrapper<User>().eq("account", dto.getAccount()));
         if (count != 0) {
-            return ResultBody.fail(ReturnCode.USER_EXISTS);
+            return ResultBody.fail(ReturnCodeEnum.USER_EXISTS);
         }
 
         // 用户不存在，创建
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
     public ResultBody updateUserPassword(UserUpdateInfoDto dto) {
         User user = userMapper.selectOne(new QueryWrapper<User>().eq("account", dto.getAccount()));
         if (!UserPasswordUtil.checkPassword(dto.getRawPass(),  user.getSalt(), user.getPassword())) {
-            return ResultBody.fail(ReturnCode.USER_INFO_ERROR);
+            return ResultBody.fail(ReturnCodeEnum.USER_INFO_ERROR);
         }
 
         String salt = UserPasswordUtil.getSalt();

@@ -18,14 +18,6 @@ const router = createRouter({
           component: () => import('@/views/home/question/question.vue')
         },
         {
-          path: 'submit',
-          name: '判题信息',
-          meta: {
-            role: RoleEnum.ADMIN,
-          },
-          component: () => import('@/views/home/submit/submit.vue')
-        },
-        {
           path: 'upload',
           name: '上传题目',
           meta: {
@@ -83,6 +75,11 @@ const router = createRouter({
           path: 'solve',
           name: 'solve',
           component: () => import('@/views/problem/solve/solve.vue'),
+        },
+        {
+          path: 'detail',
+          name: 'detail',
+          component: () => import('@/views/problem/detail/detail.vue'),
         }
       ]
     },

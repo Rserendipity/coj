@@ -2,6 +2,7 @@
 
 import {onMounted, ref} from 'vue';
 import {getAboutAPI} from "@/apis/about";
+import {MdPreview} from "md-editor-v3";
 
 const about = ref('');
 const defaultInfo = ref("project");
@@ -38,7 +39,7 @@ onMounted(() => {
   </el-tabs>
   <div class="md">
     <el-scrollbar>
-      <v-md-preview :text="about" />
+      <MdPreview :modelValue="about" preview-theme="vuepress"/>
     </el-scrollbar>
   </div>
 </template>

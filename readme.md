@@ -62,9 +62,7 @@ git clone https://github.com/Rserendipity/coj.git
 mysql -u root -p < coj.sql
 ```
 
-!!! danger Tip
-此操作会删掉已有的名为 COJ 的数据库，如有需要请先备份数据
-!!!
+> 此操作会删掉已有的名为 COJ 的数据库，如有需要请先备份数据
 
 ### 3）启动后端
 
