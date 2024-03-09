@@ -10,8 +10,8 @@ public enum JudgeStateEnum {
     WRONG_ANSWER(3, "Wrong Answer"),
     TIME_LIMIT_EXCEEDED(4, "Time Limit Exceeded"),
     MEMORY_LIMIT_EXCEEDED(5, "Memory Limit Exceeded"),
-    RUNTIME_ERROR(6, "Runtime Error"),
-    COMPILE_ERROR(7, "Compile Error"),
+    COMPILE_ERROR(6, "Compile Error"),
+    RUNTIME_ERROR(7, "Runtime Error"),
     SYSTEM_ERROR(8, "System Error");
 
     JudgeStateEnum(int code, String message) {

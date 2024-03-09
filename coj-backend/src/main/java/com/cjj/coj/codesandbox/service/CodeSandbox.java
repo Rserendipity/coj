@@ -1,7 +1,7 @@
 package com.cjj.coj.codesandbox.service;
 
-import com.cjj.coj.codesandbox.model.CodeRequest;
-import com.cjj.coj.codesandbox.model.CodeResponse;
+import com.cjj.coj.codesandbox.model.web.CodeRequest;
+import com.cjj.coj.codesandbox.model.web.CodeResponse;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.cjj.coj.codesandbox.model;
+package com.cjj.coj.codesandbox.model.web;
 
 import lombok.Data;
 

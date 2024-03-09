@@ -77,7 +77,6 @@ public class SubmitServiceImpl implements SubmitService {
 
         // 如果在 pending / judging 状态，不允许提交，减轻判题模块负担
         Submit submission = submitMapper.selectExistPendingOrJudging(upload.getUserId(), upload.getProblemId());
-        log.warn("submit:{}", submission);
 
         if (submission != null) {
             if (JudgeStateEnum.PENDING.getCode().equals(submission.getState())) {

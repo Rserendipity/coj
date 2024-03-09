@@ -2,10 +2,9 @@ package com.cjj.coj.codesandbox.utils;
 
 import org.junit.jupiter.api.Test;
 
-class CompileUtilTest {
+class ReadCommandUtilTest {
 
     @Test
     void getCommand() {
-        System.out.println(CompileUtil.getCommand("cpp").getCompile());
     }
 }

@@ -1,8 +1,8 @@
 package com.cjj.coj.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.cjj.coj.codesandbox.model.CodeRequest;
-import com.cjj.coj.codesandbox.model.CodeResponse;
+import com.cjj.coj.codesandbox.model.web.CodeRequest;
+import com.cjj.coj.codesandbox.model.web.CodeResponse;
 import com.cjj.coj.codesandbox.service.CodeSandbox;
 import com.cjj.coj.common.JudgeInfo;
 import com.cjj.coj.common.JudgeStateEnum;
@@ -59,7 +59,11 @@ public class JudgeServiceImpl implements JudgeService {
 
         // 编译 / 运行 发生错误
         if (!codeResponse.getState().equals(0)) {
-            updateSubmitState(submission, JudgeStateEnum.RUNTIME_ERROR, null, null);
+            if (codeResponse.getState().equals(1)) {
+                updateSubmitState(submission, JudgeStateEnum.COMPILE_ERROR, null, null);
+            } else {
+                updateSubmitState(submission, JudgeStateEnum.RUNTIME_ERROR, null, null);
+            }
             return;
         }
 

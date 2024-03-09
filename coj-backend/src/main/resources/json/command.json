@@ -1,17 +1,20 @@
 [
   {
     "name": "c",
-    "compile": "gcc  main.c -o main -O2",
+    "filename": "main",
+    "compile": "gcc main.c -o main -O2",
     "run": "./main"
   },
   {
     "name": "cpp",
-    "compile": "g++ -o main main.cpp -O2",
+    "filename": "main",
+    "compile": "g++ main.cpp -o main -O2",
     "run": "./main"
   },
   {
     "name": "java",
-    "compile": "javac Main.java",
-    "run": "java Main"
+    "filename": "Main",
+    "compile": "javac %s",
+    "run": "java %s"
   }
 ]
