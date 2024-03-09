@@ -7,10 +7,11 @@ export const useSystemStore = defineStore('system', () => {
         question: false,
     });
 
-    // 详情页面
-    const detail = ref({
-        question: false,
-    });
+    // 用户选择的编程语言
+    const userLanguage = ref('java');
 
-    return {loading, detail};
+    // 默认视图
+    const defaultView = ref('description');
+
+    return {loading, userLanguage, defaultView};
 })

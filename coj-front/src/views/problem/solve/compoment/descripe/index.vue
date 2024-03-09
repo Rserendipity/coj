@@ -3,11 +3,14 @@ import Describe from '@/views/problem/solve/compoment/descripe/compoment/Describ
 import Answer from "@/views/problem/solve/compoment/descripe/compoment/Answer.vue";
 import Comment from "@/views/problem/solve/compoment/descripe/compoment/Comment.vue";
 import Submits from "@/views/problem/solve/compoment/descripe/compoment/Submits.vue";
+import {useSystemStore} from "@/stores/system";
+
+const systemStore = useSystemStore();
 </script>
 
 <template>
-  <el-tabs type="border-card" class="box">
-    <el-tab-pane :lazy="true">
+  <el-tabs type="border-card" class="box" v-model="systemStore.defaultView">
+    <el-tab-pane :lazy="true" name="description">
       <template #label>
         <i class="iconfont icon-table"/>
         <el-text>描述</el-text>
@@ -15,7 +18,7 @@ import Submits from "@/views/problem/solve/compoment/descripe/compoment/Submits.
       <Describe/>
     </el-tab-pane>
 
-    <el-tab-pane :lazy="true">
+    <el-tab-pane :lazy="true" name="comment">
       <template #label>
         <i class="iconfont icon-comment"/>
         <el-text>评论</el-text>
@@ -23,7 +26,7 @@ import Submits from "@/views/problem/solve/compoment/descripe/compoment/Submits.
       <Comment/>
     </el-tab-pane>
 
-    <el-tab-pane :lazy="true">
+    <el-tab-pane :lazy="true" name="answer">
       <template #label>
         <i class="iconfont icon-wentijieda"/>
         <el-text>题解</el-text>
@@ -31,7 +34,7 @@ import Submits from "@/views/problem/solve/compoment/descripe/compoment/Submits.
       <Answer/>
     </el-tab-pane>
 
-    <el-tab-pane :lazy="true">
+    <el-tab-pane :lazy="true" name="submit">
       <template #label>
         <i class="iconfont icon-pen1"/>
         <el-text>提交</el-text>

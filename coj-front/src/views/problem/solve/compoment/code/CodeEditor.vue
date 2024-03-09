@@ -7,11 +7,14 @@ import {useRoute} from "vue-router";
 import {useSubmitsStore} from "@/stores/submits";
 import {useUserStore} from "@/stores/user";
 import {getSubmitListAPI, uploadSubmitAPI} from "@/apis/submit";
+import {useSystemStore} from "@/stores/system";
 
 const route = useRoute();
 const editor = ref(null);
 const submitStore = useSubmitsStore();
 const userStore = useUserStore();
+const systemStore = useSystemStore();
+
 
 onMounted(() => {
   editor.value = monaco.editor.create(document.querySelector('#codeContainer'), {
@@ -27,10 +30,15 @@ onMounted(() => {
   cppCompletion
   javaCompletion
 
+  // 加载保存的编程语言
+  const localLanguage = localStorage.getItem('userLanguage');
+  if (localLanguage) {
+    langSelect.value = localLanguage;
+  }
   // 加载本地代码
-  const localCode = localStorage.getItem(route.query.id);
+  const localCode = localStorage.getItem(langSelect.value + '@' + route.query.id);
   if (localCode) {
-    toRaw(editor.value).setValue(localCode);
+    toRaw(editor.value).setValue(toRaw(localCode));
   }
 });
 
@@ -83,12 +91,29 @@ watch([langSelect, themeSelect, fontSizeSelect], () => {
 
 watch(langSelect, () => {
   let code = "";
-  langs.forEach((i) => {
-    if (i.value === langSelect.value) {
-      code = i.defaultCode;
-    }
-  });
-  toRaw(editor.value).setValue(toRaw(code));
+  systemStore.userLanguage = langSelect.value;
+  // 保存到本地
+  localStorage.setItem('userLanguage', langSelect.value);
+
+  // 加载本地代码
+  const localCode = localStorage.getItem(langSelect.value + '@' + route.query.id);
+  if (localCode) {
+    toRaw(editor.value).setValue(toRaw(localCode));
+  } else {
+    langs.forEach((i) => {
+      if (i.value === langSelect.value) {
+        code = i.defaultCode;
+      }
+    });
+    toRaw(editor.value).setValue(toRaw(code));
+  }
+
+  // langs.forEach((i) => {
+  //   if (i.value === langSelect.value) {
+  //     code = i.defaultCode;
+  //   }
+  // });
+  // toRaw(editor.value).setValue(toRaw(code));
 })
 
 // 保存代码到本地
@@ -97,7 +122,7 @@ document.onkeydown = function (e) {
     e.preventDefault();
 
     const code = toRaw(editor.value).getValue();
-    localStorage.setItem(route.query.id, code);
+    localStorage.setItem(langSelect.value + '@' + route.query.id, code);
 
     ElMessage.success('已保存');
   }
@@ -127,6 +152,14 @@ const submit = () => {
   });
 }
 
+const reset = () => {
+  langs.forEach((i) => {
+    if (i.value === langSelect.value) {
+      toRaw(editor.value).setValue(toRaw(i.defaultCode));
+    }
+  });
+}
+
 </script>
 
 <template>
@@ -136,7 +169,9 @@ const submit = () => {
       <el-option v-for="item in langs" :key="item.lang" :label="item.lang" :value="item.value"/>
     </el-select>
 
-    <el-text style="margin-left: auto">切换主题：</el-text>
+    <el-button @click="reset()" style="margin-left: auto">重置代码</el-button>
+
+    <el-text style="margin-left: 10px">切换主题：</el-text>
     <el-select v-model="themeSelect" style="width: 80px">
       <el-option v-for="item in themes" :key="item.lang" :label="item.lang" :value="item.value"/>
     </el-select>

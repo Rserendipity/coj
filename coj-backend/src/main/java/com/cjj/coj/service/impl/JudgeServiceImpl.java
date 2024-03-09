@@ -6,6 +6,7 @@ import com.cjj.coj.codesandbox.model.web.CodeResponse;
 import com.cjj.coj.codesandbox.service.CodeSandbox;
 import com.cjj.coj.common.JudgeInfo;
 import com.cjj.coj.common.JudgeStateEnum;
+import com.cjj.coj.mapper.ProblemMapper;
 import com.cjj.coj.mapper.SubmitMapper;
 import com.cjj.coj.modle.dto.problem.JudgeCase;
 import com.cjj.coj.modle.dto.problem.JudgeConfig;
@@ -15,6 +16,7 @@ import com.cjj.coj.service.JudgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,15 +27,18 @@ public class JudgeServiceImpl implements JudgeService {
 
     private final CodeSandbox codeSandbox;
     private final SubmitMapper submitMapper;
+    private final ProblemMapper problemMapper;
 
     @Autowired
-    public JudgeServiceImpl(CodeSandbox codeSandbox, SubmitMapper submitMapper) {
+    public JudgeServiceImpl(CodeSandbox codeSandbox, SubmitMapper submitMapper, ProblemMapper problemMapper) {
         this.codeSandbox = codeSandbox;
         this.submitMapper = submitMapper;
+        this.problemMapper = problemMapper;
     }
 
     @Override
     @Async
+    @Transactional
     public void doJudge(Submit submission, Problem problem) {
         // 构造请求
         CodeRequest codeRequest = new CodeRequest();
@@ -98,6 +103,9 @@ public class JudgeServiceImpl implements JudgeService {
 
         // 没有问题，通过
         updateSubmitState(submission, JudgeStateEnum.ACCEPTED, codeResponse.getUseTime(), codeResponse.getUseMemory());
+        // 更新题目通过数
+        problem.setPass(problem.getPass() + 1);
+        problemMapper.updateById(problem);
     }
 
     private void updateSubmitState(Submit submission, JudgeStateEnum state, Integer useTime, Integer useMemory) {

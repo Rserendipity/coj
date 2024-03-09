@@ -5,14 +5,14 @@ import Container from "@/compoment/Container.vue";
 import {getSubmitDetailAPI} from "@/apis/submit";
 import {useRoute} from "vue-router";
 import router from '@/router';
+import {useSystemStore} from "@/stores/system";
 
 const code = ref("");
 const route = useRoute()
-
+const SystemStore = useSystemStore();
 const getSubmitDetail = async () => {
   let res = await getSubmitDetailAPI(route.query.id);
   res = res.data.data;
-  console.log(res);
   code.value = `> 语言：${res.language}\n` +
       "\n" +
       `> 状态：${res.judgeInfo.message} \n` +
@@ -28,15 +28,20 @@ const getSubmitDetail = async () => {
 
 getSubmitDetail();
 
+const back = () => {
+  // SystemStore.defaultView = "submit";
+  router.back();
+}
+
 </script>
 
 <template>
   <Container>
     <el-scrollbar>
-      <MdPreview :modelValue="code" preview-theme="cyanosis"/>
       <el-row>
-        <el-button type="primary" @click="router.back();" style="margin-left: auto;">返 回</el-button>
+        <el-button type="primary" @click="back()">返 回</el-button>
       </el-row>
+      <MdPreview :modelValue="code" preview-theme="cyanosis"/>
     </el-scrollbar>
   </Container>
 </template>
