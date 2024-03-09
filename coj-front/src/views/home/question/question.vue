@@ -9,6 +9,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
 
 const userStore = useUserStore();
 const useProblem = useProblemStore();
+const systemStore = useSystemStore();
 
 const levelView = (level) => {
   switch (level) {
@@ -25,6 +26,7 @@ const levelView = (level) => {
 
 const solve = (id) => {
   systemStore.loading.question = true;
+  systemStore.defaultView = "description";
   router.push({
     path: '/problem/solve',
     query: {
@@ -52,7 +54,7 @@ const answer = (id) => {
 }
 
 const del = (id) => {
-  deleteProblemAPI(id).then(({ data }) => {
+  deleteProblemAPI(id).then(({data}) => {
     if (data.code === 0) {
       ElMessage.success("删除成功");
       getProblems();
@@ -63,7 +65,7 @@ const del = (id) => {
 }
 
 const getProblems = () => {
-  getProblemListAPI().then(({ data }) => {
+  getProblemListAPI().then(({data}) => {
     if (data.code === 0) {
       useProblem.problems = data.data;
     } else {
@@ -72,11 +74,11 @@ const getProblems = () => {
   })
 }
 
-const systemStore = useSystemStore();
 
 onMounted(() => {
-  if (useProblem.problems.length === 0) {
+  if (useProblem.problems.length === 0 || systemStore.modifyProblem) {
     getProblems();
+    systemStore.modifyProblem = false;
   }
   systemStore.loading.question = false;
 })
@@ -99,7 +101,7 @@ const problemView = computed(() => {
       return item.title.indexOf(search.value.value) !== -1;
     } else {
       return item.tags.some(tag =>
-        tag.includes(search.value.value)
+          tag.includes(search.value.value)
       )
     }
   })
@@ -111,7 +113,7 @@ const problemView = computed(() => {
   <el-row class="search">
     <el-input placeholder="输入筛选名..." v-model="search.value" clearable>
       <template #prefix>
-        <i class="iconfont icon-search" />
+        <i class="iconfont icon-search"/>
       </template>
     </el-input>
     <el-radio-group v-model="search.type" label="label position">

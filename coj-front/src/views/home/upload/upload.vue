@@ -6,8 +6,10 @@ import {useRoute} from 'vue-router';
 import router from "@/router";
 import {useUserStore} from "@/stores/user";
 import {MdEditor} from "md-editor-v3";
+import {useSystemStore} from "@/stores/system";
 
 const userStore = useUserStore();
+const systemStore = useSystemStore();
 
 const question = ref({
   title: "",
@@ -54,6 +56,7 @@ const submit = () => {
   updateQuestionAPI(question.value, route.query.id).then(({data}) => {
     if (data.code === 0) {
       if (route.query.id) {
+        systemStore.modifyProblem = true;
         ElMessage.success("修改成功");
       } else {
         ElMessage.success("添加成功");

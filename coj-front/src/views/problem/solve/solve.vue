@@ -2,6 +2,7 @@
 import Description from "@/views/problem/solve/compoment/descripe/index.vue";
 import CodeEditor from "@/views/problem/solve/compoment/code/CodeEditor.vue";
 import {onMounted, ref} from "vue";
+import {useSystemStore} from "@/stores/system";
 
 const desc = ref();
 const bar = ref();

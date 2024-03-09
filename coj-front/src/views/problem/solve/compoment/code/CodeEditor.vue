@@ -139,15 +139,25 @@ const submit = () => {
   uploadSubmitAPI(submit).then(({data}) => {
     if (data.code === 0) {
       ElMessage.success("提交成功");
-      getSubmitListAPI(userStore.userinfo.id, route.query.id).then(({data}) => {
-        if (data.code === 0) {
-          submitStore.submits = data.data.sort((a, b) => new Date(b.time) - new Date(a.time));
-        } else {
-          ElMessage.warning(data.message);
-        }
-      });
+      systemStore.defaultView = "submit";
+      getResult();
+
+      setTimeout(()=>{
+        getResult();
+      }, 1000);
+
     } else {
       ElMessage.error(data.message);
+    }
+  });
+}
+
+const getResult = () => {
+  getSubmitListAPI(userStore.userinfo.id, route.query.id).then(({data}) => {
+    if (data.code === 0) {
+      submitStore.submits = data.data.sort((a, b) => new Date(b.time) - new Date(a.time));
+    } else {
+      ElMessage.warning(data.message);
     }
   });
 }

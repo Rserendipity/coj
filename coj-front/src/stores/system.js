@@ -13,5 +13,8 @@ export const useSystemStore = defineStore('system', () => {
     // 默认视图
     const defaultView = ref('description');
 
-    return {loading, userLanguage, defaultView};
+    // 是否修改问题
+    const modifyProblem = ref(false);
+
+    return {loading, userLanguage, defaultView, modifyProblem};
 })
