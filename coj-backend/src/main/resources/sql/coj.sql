@@ -19,6 +19,7 @@ create table problem
     title        varchar(50),
     level        varchar(10),
     description  text comment 'MD格式的描述',
+    answer       text comment 'MD格式的答案',
     tags         varchar(255) comment 'Json格式字符串',
     pass         int comment '通过数',
 
@@ -47,6 +48,15 @@ create table submission
     index idx_user_id (user_id)
 );
 
-insert into user values (1,'admin','管理员','4ad038f69417e59b34a6f753a002c31f','783b8e9cb50b4c789e027eec8e7f5909',null,'admin');
+create table comments
+(
+    id         bigint primary key auto_increment,
+    user_id    bigint comment '评论者ID',
+    problem_id bigint comment '题目ID',
+    content    text comment '评论内容',
+    create_time       timestamp comment '评论时间'
+);
+
+insert into user values (1, 'admin', '管理员', '4ad038f69417e59b34a6f753a002c31f', '783b8e9cb50b4c789e027eec8e7f5909', null, 'admin');
 
 
