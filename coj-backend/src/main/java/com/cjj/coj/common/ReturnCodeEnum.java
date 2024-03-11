@@ -29,7 +29,9 @@ public enum ReturnCodeEnum {
 
     // 服务器内部问题
     SERVICE_ERROR(6000, "服务器出现问题，请联系管理员"),
-    SERVICE_FILE_NOT_EXIST(6001, "服务器文件不存在"), ;
+    SERVICE_NOT_FOUND(6001, "请求了非法接口"),
+    SERVICE_FILE_NOT_EXIST(6002, "服务器文件不存在"),
+    ;
 
 
     ReturnCodeEnum(int code, String message) {

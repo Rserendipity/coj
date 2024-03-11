@@ -25,10 +25,16 @@
 
 ### 2. 运行步骤
 
-#### 1）下载源码
+#### 1）下载源码（二选一即可）
 
+GitHub：
 ```sh
 git clone https://github.com/Rserendipity/coj.git
+```
+
+Gitee：
+```sh
+git clone https://gitee.com/chang-jing-jing/coj.git
 ```
 
 使用 IDEA 打开`coj`项目

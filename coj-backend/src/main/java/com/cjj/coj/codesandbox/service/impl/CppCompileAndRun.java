@@ -33,13 +33,20 @@ public class CppCompileAndRun implements CompileAndRun {
         // 编译
         try {
             String fullName = filepath + File.separator;
-            String s = String.format("g++ %s -o %s", fullName + "main.cpp", fullName + "main");
+            String s = String.format("g++ %s -o %s -O2", fullName + "main.cpp", fullName + "main");
 
             Process exec = Runtime.getRuntime().exec(s);
             exec.waitFor();
             // 是否编译成功
             if (exec.exitValue() != 0) {
-                throw new CompileException("Compile Error");
+                // 读取错误信息
+                BufferedReader stdError = new BufferedReader(new InputStreamReader(exec.getErrorStream()));
+                StringBuilder sb = new StringBuilder();
+                while ((s = stdError.readLine()) != null) {
+                    sb.append(s).append("\n");
+                }
+                FileUtil.del(filepath);
+                throw new CompileException(sb.toString());
             }
         } catch (IOException | InterruptedException e) {
             // 删除文件

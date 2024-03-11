@@ -5,7 +5,7 @@ import {getAboutAPI} from "@/apis/about";
 import {MdPreview} from "md-editor-v3";
 
 const about = ref('');
-const defaultInfo = ref("project");
+const defaultInfo = ref("describe");
 const lazyArr = ref({});
 
 const switchInfo = (tab) => {
@@ -35,9 +35,9 @@ onMounted(() => {
   <el-container>
     <el-aside class="tab">
       <el-tabs v-model="defaultInfo" @tab-click="switchInfo" tab-position="left">
-        <el-tab-pane label="关于项目" name="project"></el-tab-pane>
-        <el-tab-pane label="安装运行" name="try"></el-tab-pane>
-        <el-tab-pane label="作者信息" name="author"></el-tab-pane>
+        <el-tab-pane label="项目概述" name="describe"></el-tab-pane>
+        <el-tab-pane label="安装运行" name="install"></el-tab-pane>
+        <el-tab-pane label="作者简历" name="resume"></el-tab-pane>
         <el-tab-pane label="数据库设计" name="database"></el-tab-pane>
       </el-tabs>
     </el-aside>

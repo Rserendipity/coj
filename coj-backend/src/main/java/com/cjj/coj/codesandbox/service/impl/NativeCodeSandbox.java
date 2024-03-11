@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 public class NativeCodeSandbox implements CodeSandbox {
     @Override
     public CodeResponse executeCode(CodeRequest request) {
-        CompileAndRun compileAndRun = CompileFactory.getCompileAndRun(request.getLanguage());
+        CompileAndRun runner = CompileFactory.getCompileAndRun(request.getLanguage());
         CodeResponse codeResponse = new CodeResponse();
 
-        Thread taskThread = runUserCode(request, compileAndRun, codeResponse);
+        Thread taskThread = runUserCode(runner, request, codeResponse);
 
         // 主线程等待，超过三秒则中断
         try {
@@ -37,7 +37,7 @@ public class NativeCodeSandbox implements CodeSandbox {
         return codeResponse;
     }
 
-    private static Thread runUserCode(CodeRequest request, CompileAndRun compileAndRun, CodeResponse codeResponse) {
+    private static Thread runUserCode(CompileAndRun compileAndRun, CodeRequest request, CodeResponse codeResponse) {
         Runnable task = () -> {
             try {
                 compileAndRun.compile(request.getCode());
@@ -49,10 +49,10 @@ public class NativeCodeSandbox implements CodeSandbox {
                 codeResponse.setStdout(run.getOutput());
             } catch (CompileException e) {
                 codeResponse.setState(1);
-                codeResponse.setStderr("Compile Error");
+                codeResponse.setStderr(e.getMessage());
             } catch (RuntimeException e) {
                 codeResponse.setState(3);
-                codeResponse.setStderr("System Error");
+                codeResponse.setStderr(e.getMessage());
             }
         };
 

@@ -8,7 +8,7 @@ import java.io.IOException;
 public class FileUtilTests {
     @Test
     public void getResourceFileTest() throws IOException {
-        String s = ReadResourceFileUtil.readResourceFile("/md/author.md");
+        String s = ReadResourceFileUtil.readResourceFile("/md/resume.md");
         System.out.println(s);
     }
 

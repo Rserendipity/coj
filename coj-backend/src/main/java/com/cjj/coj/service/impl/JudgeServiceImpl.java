@@ -58,16 +58,16 @@ public class JudgeServiceImpl implements JudgeService {
 
         // 沙箱出问题
         if (codeResponse == null) {
-            updateSubmitState(submission, JudgeStateEnum.SYSTEM_ERROR, null, null);
+            updateSubmitState(submission, JudgeStateEnum.SYSTEM_ERROR, null, null, null);
             return;
         }
 
         // 编译 / 运行 发生错误
         if (!codeResponse.getState().equals(0)) {
             if (codeResponse.getState().equals(1)) {
-                updateSubmitState(submission, JudgeStateEnum.COMPILE_ERROR, null, null);
+                updateSubmitState(submission, JudgeStateEnum.COMPILE_ERROR, codeResponse.getStderr(), null, null);
             } else {
-                updateSubmitState(submission, JudgeStateEnum.RUNTIME_ERROR, null, null);
+                updateSubmitState(submission, JudgeStateEnum.RUNTIME_ERROR, codeResponse.getStderr(), null, null);
             }
             return;
         }
@@ -75,13 +75,13 @@ public class JudgeServiceImpl implements JudgeService {
         // 超出时间限制
         JudgeConfig config = JSON.parseObject(problem.getJudgeConfig(), JudgeConfig.class);
         if (codeResponse.getUseTime() > config.getTimeLimit()) {
-            updateSubmitState(submission, JudgeStateEnum.TIME_LIMIT_EXCEEDED, codeResponse.getUseTime(), codeResponse.getUseMemory());
+            updateSubmitState(submission, JudgeStateEnum.TIME_LIMIT_EXCEEDED, null, codeResponse.getUseTime(), codeResponse.getUseMemory());
             return;
         }
 
         // 超出内存限制
         if (codeResponse.getUseMemory() > config.getMemoryLimit()) {
-            updateSubmitState(submission, JudgeStateEnum.MEMORY_LIMIT_EXCEEDED, codeResponse.getUseTime(), codeResponse.getUseMemory());
+            updateSubmitState(submission, JudgeStateEnum.MEMORY_LIMIT_EXCEEDED, null, codeResponse.getUseTime(), codeResponse.getUseMemory());
             return;
         }
 
@@ -89,31 +89,32 @@ public class JudgeServiceImpl implements JudgeService {
         List<String> stdout = codeResponse.getStdout();
         // 输出不一致
         if (stdout.size() != outputs.size()) {
-            updateSubmitState(submission, JudgeStateEnum.WRONG_ANSWER, null, null);
+            updateSubmitState(submission, JudgeStateEnum.WRONG_ANSWER, null, null, null);
             return;
         }
 
         // 逐个对比
         for (int i = 0; i < stdout.size(); i++) {
             if (!stdout.get(i).equals(outputs.get(i))) {
-                updateSubmitState(submission, JudgeStateEnum.WRONG_ANSWER, null, null);
+                updateSubmitState(submission, JudgeStateEnum.WRONG_ANSWER, null, null, null);
                 return;
             }
         }
 
         // 没有问题，通过
-        updateSubmitState(submission, JudgeStateEnum.ACCEPTED, codeResponse.getUseTime(), codeResponse.getUseMemory());
+        updateSubmitState(submission, JudgeStateEnum.ACCEPTED, null, codeResponse.getUseTime(), codeResponse.getUseMemory());
         // 更新题目通过数
         problem.setPass(problem.getPass() + 1);
         problemMapper.updateById(problem);
     }
 
-    private void updateSubmitState(Submit submission, JudgeStateEnum state, Integer useTime, Integer useMemory) {
+    private void updateSubmitState(Submit submission, JudgeStateEnum state, String error, Integer useTime, Integer useMemory) {
         JudgeInfo judgeInfo = new JudgeInfo();
         judgeInfo.setState(state.getCode());
         judgeInfo.setMessage(state.getMessage());
         judgeInfo.setUseTime(useTime);
         judgeInfo.setUseMemory(useMemory);
+        judgeInfo.setStderr(error);
 
         submission.setState(state.getCode());
         submission.setJudgeInfo(JSON.toJSONString(judgeInfo));

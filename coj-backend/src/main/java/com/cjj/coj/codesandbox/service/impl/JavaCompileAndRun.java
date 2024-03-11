@@ -32,11 +32,19 @@ public class JavaCompileAndRun implements CompileAndRun {
 
         // 编译
         try {
-            Process exec = Runtime.getRuntime().exec(String.format("javac %s", filepath + File.separator + "Main.java"));
+            Process exec = Runtime.getRuntime().exec(String.format("javac -encoding utf-8 %s", filepath + File.separator + "Main.java"));
             exec.waitFor();
             // 是否编译成功
             if (exec.exitValue() != 0) {
-                throw new CompileException("Compile Error");
+                // 读取错误信息
+                BufferedReader stdError = new BufferedReader(new InputStreamReader(exec.getErrorStream()));
+                String s;
+                StringBuilder sb = new StringBuilder();
+                while ((s = stdError.readLine()) != null) {
+                    sb.append(s).append("\n");
+                }
+                FileUtil.del(filepath);
+                throw new CompileException(sb.toString());
             }
         } catch (IOException | InterruptedException e) {
             // 删除文件
@@ -52,7 +60,7 @@ public class JavaCompileAndRun implements CompileAndRun {
             List<String> outs = new ArrayList<>();
             Long start = System.currentTimeMillis();
             // 输入测试用例
-            Process exec = Runtime.getRuntime().exec(String.format("java -classpath %s %s", filepath, "Main"));
+            Process exec = Runtime.getRuntime().exec(String.format("java -Dfile.encoding=UTF-8 -classpath %s %s", filepath, "Main"));
 
             exec.getOutputStream().write((judgeCases.size() + "\n").getBytes());
             exec.getOutputStream().flush();

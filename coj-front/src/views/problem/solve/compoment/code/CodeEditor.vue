@@ -65,6 +65,17 @@ const langs = [
         "    return 0;\n" +
         "}"
   },
+  {
+    lang: 'C',
+    value: 'c',
+    defaultCode: "#include <stdio.h>\n" +
+        "\n" +
+        "int main() {\n" +
+        "    // TODO 从此处开始编写你的代码\n" +
+        "    \n" +
+        "    return 0;\n" +
+        "}"
+  },
 ]
 const langSelect = ref("java");
 

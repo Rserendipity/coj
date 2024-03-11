@@ -13,23 +13,24 @@ const SystemStore = useSystemStore();
 const getSubmitDetail = async () => {
   let res = await getSubmitDetailAPI(route.query.id);
   res = res.data.data;
-  code.value = `> 语言：${res.language}\n` +
-      "\n" +
-      `> 状态：${res.judgeInfo.message} \n` +
-      "\n" +
-      `> 时间消耗：${res.judgeInfo.useTime} ms\n` +
-      "\n" +
-      `> 内存消耗：${res.judgeInfo.useMemory} kb\n` +
-      "\n" +
-      `\`\`\` ${res.language} \n` +
-      `${res.code}\n` +
-      "```";
+  code.value = `
+> 语言：${res.language}
+
+> 状态：${res.judgeInfo.message}
+
+> 时间消耗：${res.judgeInfo.useTime} ms
+
+> 内存消耗：${res.judgeInfo.useMemory} kb
+
+\`\`\` ${res.judgeInfo.stderr ? "sh" : res.language}
+${res.judgeInfo.stderr ? res.judgeInfo.stderr : res.code}
+\`\`\`
+`;
 }
 
 getSubmitDetail();
 
 const back = () => {
-  // SystemStore.defaultView = "submit";
   router.back();
 }
 
