@@ -1,61 +1,72 @@
 package com.cjj.coj.codesandbox.service.impl;
 
-import com.cjj.coj.codesandbox.exception.CompileException;
+import com.cjj.coj.codesandbox.exception.CompileCodeException;
+import com.cjj.coj.codesandbox.exception.RunCodeException;
 import com.cjj.coj.codesandbox.exception.TimeOutException;
 import com.cjj.coj.codesandbox.model.ExecuteResult;
 import com.cjj.coj.codesandbox.model.web.CodeRequest;
 import com.cjj.coj.codesandbox.model.web.CodeResponse;
 import com.cjj.coj.codesandbox.service.CodeSandbox;
-import com.cjj.coj.codesandbox.service.CompileAndRun;
-import com.cjj.coj.codesandbox.service.CompileFactory;
+import com.cjj.coj.codesandbox.service.impl.nativecodebox.NativeCompileAndRun;
+import com.cjj.coj.codesandbox.service.impl.nativecodebox.NativeCompileFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class NativeCodeSandbox implements CodeSandbox {
     @Override
     public CodeResponse executeCode(CodeRequest request) {
-        CompileAndRun runner = CompileFactory.getCompileAndRun(request.getLanguage());
+        String code = request.getCode();
+        String language = request.getLanguage();
+        List<String> judgeCases = request.getJudgeCases();
         CodeResponse codeResponse = new CodeResponse();
 
-        Thread taskThread = runUserCode(runner, request, codeResponse);
+        NativeCompileAndRun compileAndRun = NativeCompileFactory.getCompileAndRun(language);
 
-        // 主线程等待，超过三秒则中断
+        ExecuteResult result = null;
+        String path = null;
         try {
-            taskThread.start();
-            taskThread.join(5000);
-
-            if (taskThread.isAlive()) {
-                taskThread.interrupt();
-                codeResponse.setState(0);
-                codeResponse.setUseTime(5000);
+            // 编译运行代码
+            path = compileAndRun.compile(code);
+            result = compileAndRun.run(path, judgeCases);
+        } catch (CompileCodeException e) {
+            // 编译异常
+            codeResponse.setState(1);
+            codeResponse.setStderr(e.getMessage());
+            codeResponse.setStdout(null);
+            codeResponse.setUseTime(null);
+            codeResponse.setUseMemory(null);
+            return codeResponse;
+        } catch (RunCodeException e) {
+            // 运行异常
+            codeResponse.setState(2);
+            codeResponse.setStderr(e.getMessage());
+            codeResponse.setStdout(null);
+            codeResponse.setUseTime(null);
+            codeResponse.setUseMemory(null);
+            return codeResponse;
+        } catch (TimeOutException e) {
+            // 运行异常
+            codeResponse.setState(0);
+            codeResponse.setStderr(e.getMessage());
+            codeResponse.setStdout(null);
+            codeResponse.setUseTime(NativeCompileAndRun.MAX_TIME_LIMIT);
+            codeResponse.setUseMemory(null);
+            return codeResponse;
+        } finally {
+            // 删除临时文件
+            if (path != null) {
+                compileAndRun.delete(path);
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new TimeOutException("Execution interrupted");
         }
 
+        // 没有发生 编译 / 运行 异常，返回正常结果
+        codeResponse.setState(0);
+        codeResponse.setStderr(null);
+        codeResponse.setStdout(result.getOutput());
+        codeResponse.setUseTime(result.getUseTime());
+        codeResponse.setUseMemory(result.getUseMemory());
         return codeResponse;
-    }
-
-    private static Thread runUserCode(CompileAndRun compileAndRun, CodeRequest request, CodeResponse codeResponse) {
-        Runnable task = () -> {
-            try {
-                compileAndRun.compile(request.getCode());
-                ExecuteResult run = compileAndRun.run(request.getJudgeCases());
-                codeResponse.setState(0);
-                codeResponse.setStderr(null);
-                codeResponse.setUseTime(run.getUseTime());
-                codeResponse.setUseMemory(123);
-                codeResponse.setStdout(run.getOutput());
-            } catch (CompileException e) {
-                codeResponse.setState(1);
-                codeResponse.setStderr(e.getMessage());
-            } catch (RuntimeException e) {
-                codeResponse.setState(3);
-                codeResponse.setStderr(e.getMessage());
-            }
-        };
-
-        return new Thread(task);
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 //@Service
 public class TestCodeSandbox implements CodeSandbox {
     @Override
-    public CodeResponse executeCode(CodeRequest request){
+    public CodeResponse executeCode(CodeRequest request) {
         // 仅用于测试流程，不实际执行代码
         System.out.println(request);
         CodeResponse codeResponse = new CodeResponse();

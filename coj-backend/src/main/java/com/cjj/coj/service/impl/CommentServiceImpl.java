@@ -32,7 +32,6 @@ public class CommentServiceImpl implements CommentService {
         comments.setProblemId(commentDto.getProblemId());
         comments.setContent(commentDto.getContent());
         comments.setCreateTime(new Date());
-        System.out.println(comments);
 
         commentMapper.insert(comments);
         return ResultBody.success();

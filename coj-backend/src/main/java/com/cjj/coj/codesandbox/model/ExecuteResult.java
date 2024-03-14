@@ -8,4 +8,5 @@ import java.util.List;
 public class ExecuteResult {
     private List<String> output;
     private Integer useTime;
+    private Integer useMemory;
 }

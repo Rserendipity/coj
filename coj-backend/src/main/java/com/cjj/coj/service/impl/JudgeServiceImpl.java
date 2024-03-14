@@ -38,8 +38,10 @@ public class JudgeServiceImpl implements JudgeService {
 
     @Override
     @Async
-    @Transactional
     public void doJudge(Submit submission, Problem problem) {
+        // 状态更改为判题中
+        updateSubmitState(submission, JudgeStateEnum.JUDGING, null, null, null);
+
         // 构造请求
         CodeRequest codeRequest = new CodeRequest();
         codeRequest.setCode(submission.getCode());

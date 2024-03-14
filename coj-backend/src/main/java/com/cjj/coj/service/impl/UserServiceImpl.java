@@ -65,9 +65,6 @@ public class UserServiceImpl implements UserService {
         payload.put("user", JSON.toJSONString(userVo));
         userVo.setToken(JwtUtil.generateToken(payload));
 
-        System.out.println(payload.get("user"));
-        System.out.println(userVo);
-
         return ResultBody.success(userVo);
     }
 

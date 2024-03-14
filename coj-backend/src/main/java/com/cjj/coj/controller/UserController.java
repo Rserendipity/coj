@@ -76,8 +76,6 @@ public class UserController {
             return ResultBody.fail(ReturnCodeEnum.USER_INFO_ERROR);
         }
 
-        System.out.println(dto);
-
         if (!dto.getNewPass().equals(dto.getConfirmPass())) {
             return ResultBody.fail(ReturnCodeEnum.USER_INFO_ILLEGAL);
         }

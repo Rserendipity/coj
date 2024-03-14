@@ -1,7 +1,7 @@
 <script setup>
 import * as monaco from 'monaco-editor';
 import {onMounted, ref, toRaw, watch} from 'vue';
-import {cppCompletion, javaCompletion} from "@/views/problem/solve/compoment/code/inhint";
+import {cppCompletionFunc, javaCompletionFunc} from "@/views/problem/solve/compoment/code/inhint";
 import router from "@/router";
 import {useRoute} from "vue-router";
 import {useSubmitsStore} from "@/stores/submits";
@@ -17,6 +17,10 @@ const systemStore = useSystemStore();
 
 
 onMounted(() => {
+  // 加载自动补全
+  cppCompletionFunc();
+  javaCompletionFunc();
+
   editor.value = monaco.editor.create(document.querySelector('#codeContainer'), {
     value: langs[0].defaultCode,
     language: 'cpp',
@@ -27,8 +31,6 @@ onMounted(() => {
     },
     automaticLayout: true,
   });
-  cppCompletion
-  javaCompletion
 
   // 加载保存的编程语言
   const localLanguage = localStorage.getItem('userLanguage');
@@ -119,12 +121,6 @@ watch(langSelect, () => {
     toRaw(editor.value).setValue(toRaw(code));
   }
 
-  // langs.forEach((i) => {
-  //   if (i.value === langSelect.value) {
-  //     code = i.defaultCode;
-  //   }
-  // });
-  // toRaw(editor.value).setValue(toRaw(code));
 })
 
 // 保存代码到本地
@@ -214,7 +210,6 @@ const reset = () => {
 <style scoped>
 .option {
   height: 40px;
-  display: flex;
   align-items: center;
 }
 
