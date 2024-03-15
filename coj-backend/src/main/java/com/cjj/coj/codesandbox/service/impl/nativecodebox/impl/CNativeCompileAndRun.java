@@ -3,6 +3,7 @@ package com.cjj.coj.codesandbox.service.impl.nativecodebox.impl;
 import com.cjj.coj.codesandbox.model.ExecuteResult;
 import com.cjj.coj.codesandbox.service.impl.nativecodebox.NativeCompileAndRun;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CNativeCompileAndRun implements NativeCompileAndRun {
@@ -10,17 +11,17 @@ public class CNativeCompileAndRun implements NativeCompileAndRun {
     CppNativeCompileAndRun cppCompileAndRun = new CppNativeCompileAndRun();
 
     @Override
-    public String compile(String code) {
-        return cppCompileAndRun.compile(code);
+    public void compile(String code) {
+        cppCompileAndRun.compile(code);
     }
 
     @Override
-    public ExecuteResult run(String path, List<String> judgeCases) {
-        return cppCompileAndRun.run(path, judgeCases);
+    public ExecuteResult run(List<String> judgeCases) {
+        return cppCompileAndRun.run(judgeCases);
     }
 
     @Override
-    public void delete(String path) {
-        cppCompileAndRun.delete(path);
+    public void close() {
+        cppCompileAndRun.close();
     }
 }

@@ -11,6 +11,7 @@ import com.cjj.coj.codesandbox.service.impl.dockercodebox.DockerCompileAndRun;
 import com.cjj.coj.codesandbox.service.impl.dockercodebox.DockerCompileFactory;
 import com.cjj.coj.codesandbox.service.impl.nativecodebox.NativeCompileAndRun;
 
+import java.io.IOException;
 import java.util.List;
 
 public class DockerCodeSandbox implements CodeSandbox {
@@ -21,14 +22,11 @@ public class DockerCodeSandbox implements CodeSandbox {
         List<String> judgeCases = request.getJudgeCases();
         CodeResponse codeResponse = new CodeResponse();
 
-        DockerCompileAndRun compileAndRun = DockerCompileFactory.getCompileAndRun(language);
-
-        ExecuteResult result;
-        String path = null;
-        try {
+        ExecuteResult result = null;
+        try (DockerCompileAndRun compileAndRun = DockerCompileFactory.getCompileAndRun(language)) {
             // 编译运行代码
-            path = compileAndRun.compile(code);
-            result = compileAndRun.run(path, judgeCases);
+            compileAndRun.compile(code);
+            result = compileAndRun.run(judgeCases);
         } catch (CompileCodeException e) {
             // 编译异常
             codeResponse.setState(1);
@@ -53,11 +51,9 @@ public class DockerCodeSandbox implements CodeSandbox {
             codeResponse.setUseTime(NativeCompileAndRun.MAX_TIME_LIMIT);
             codeResponse.setUseMemory(null);
             return codeResponse;
-        } finally {
-            // 删除临时文件
-            if (path != null) {
-                compileAndRun.delete(path);
-            }
+        } catch (IOException e) {
+            // 系统异常
+            return null;
         }
 
         // 没有发生 编译 / 运行 异常，返回正常结果

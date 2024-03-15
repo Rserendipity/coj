@@ -123,15 +123,19 @@ watch(langSelect, () => {
 
 })
 
+const saveCode = () => {
+  const code = toRaw(editor.value).getValue();
+  localStorage.setItem(langSelect.value + '@' + route.query.id, code);
+}
+
 // 保存代码到本地
 document.onkeydown = function (e) {
   if (e.ctrlKey && e.key === 's') {
     e.preventDefault();
 
-    const code = toRaw(editor.value).getValue();
-    localStorage.setItem(langSelect.value + '@' + route.query.id, code);
-
+    saveCode();
     ElMessage.success('已保存');
+
   }
 }
 
@@ -143,6 +147,7 @@ const submit = () => {
     "problemId": route.query.id,
     "userId": userStore.userinfo.id
   }
+  saveCode();
   uploadSubmitAPI(submit).then(({data}) => {
     if (data.code === 0) {
       ElMessage.success("提交成功");
@@ -151,7 +156,7 @@ const submit = () => {
 
       setTimeout(()=>{
         getResult();
-      }, 1000);
+      }, 1500);
 
     } else {
       ElMessage.error(data.message);

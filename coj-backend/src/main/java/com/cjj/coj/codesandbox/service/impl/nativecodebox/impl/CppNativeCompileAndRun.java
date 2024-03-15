@@ -18,7 +18,7 @@ public class CppNativeCompileAndRun implements NativeCompileAndRun {
     private String filepath;
 
     @Override
-    public String compile(String code) {
+    public void compile(String code) {
 
         String pathName = System.getProperty("user.dir") + File.separator + "test";
 
@@ -46,7 +46,6 @@ public class CppNativeCompileAndRun implements NativeCompileAndRun {
                         exec.destroy(); // 超时则销毁进程
                     }
                 } catch (InterruptedException e) {
-                    delete(filepath);
                     throw new TimeOutException("编译超时，编译失败");
                 }
             }).start();
@@ -60,19 +59,15 @@ public class CppNativeCompileAndRun implements NativeCompileAndRun {
                 while ((s = stdError.readLine()) != null) {
                     sb.append(s).append("\n");
                 }
-                FileUtil.del(filepath);
                 throw new CompileCodeException(sb.toString());
             }
         } catch (IOException | InterruptedException e) {
-            // 删除文件
-            FileUtil.del(filepath);
             throw new RuntimeException();
         }
-        return null;
     }
 
     @Override
-    public ExecuteResult run(String path, List<String> judgeCases) {
+    public ExecuteResult run(List<String> judgeCases) {
         // 运行
         try {
             List<String> outs = new ArrayList<>();
@@ -124,9 +119,9 @@ public class CppNativeCompileAndRun implements NativeCompileAndRun {
     }
 
     @Override
-    public void delete(String path) {
-        if (path != null && !path.isEmpty()) {
-            FileUtil.del(path);
+    public void close() {
+        if (filepath != null && !filepath.isEmpty()) {
+            FileUtil.del(filepath);
         }
     }
 }

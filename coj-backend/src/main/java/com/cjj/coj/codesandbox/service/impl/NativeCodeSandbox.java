@@ -9,8 +9,10 @@ import com.cjj.coj.codesandbox.model.web.CodeResponse;
 import com.cjj.coj.codesandbox.service.CodeSandbox;
 import com.cjj.coj.codesandbox.service.impl.nativecodebox.NativeCompileAndRun;
 import com.cjj.coj.codesandbox.service.impl.nativecodebox.NativeCompileFactory;
+import org.omg.SendingContext.RunTime;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -22,14 +24,12 @@ public class NativeCodeSandbox implements CodeSandbox {
         List<String> judgeCases = request.getJudgeCases();
         CodeResponse codeResponse = new CodeResponse();
 
-        NativeCompileAndRun compileAndRun = NativeCompileFactory.getCompileAndRun(language);
-
         ExecuteResult result = null;
-        String path = null;
-        try {
+
+        try (NativeCompileAndRun compileAndRun = NativeCompileFactory.getCompileAndRun(language)) {
             // 编译运行代码
-            path = compileAndRun.compile(code);
-            result = compileAndRun.run(path, judgeCases);
+            compileAndRun.compile(code);
+            result = compileAndRun.run(judgeCases);
         } catch (CompileCodeException e) {
             // 编译异常
             codeResponse.setState(1);
@@ -47,18 +47,16 @@ public class NativeCodeSandbox implements CodeSandbox {
             codeResponse.setUseMemory(null);
             return codeResponse;
         } catch (TimeOutException e) {
-            // 运行异常
+            // 超时异常
             codeResponse.setState(0);
             codeResponse.setStderr(e.getMessage());
             codeResponse.setStdout(null);
             codeResponse.setUseTime(NativeCompileAndRun.MAX_TIME_LIMIT);
             codeResponse.setUseMemory(null);
             return codeResponse;
-        } finally {
-            // 删除临时文件
-            if (path != null) {
-                compileAndRun.delete(path);
-            }
+        } catch (IOException e) {
+            // 未知异常，沙箱出问题了
+            return null;
         }
 
         // 没有发生 编译 / 运行 异常，返回正常结果
