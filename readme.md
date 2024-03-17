@@ -79,6 +79,16 @@ spring:
 ...
 ```
 
+修改阿里OSS配置：`E:\code\Project\coj\coj-backend\src\main\java\com\cjj\coj\utils\AliOSSUtil.java`的数据库配置（15-18行）
+    
+```java
+private static final String ACCESS_KEY_ID = "你的oss key id";
+private static final String ACCESS_KEY_SECRET = "你的oss key id secret";
+private static final String ENDPOINT = "你的oss的端点";
+private static final String BUCKET_NAME = "使用的存储位置";
+```
+
+
 运行`coj-backend/src/main/java/com/cjj/coj/CojBackendApplication`类
 
 ### 4）启动前端
