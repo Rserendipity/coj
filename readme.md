@@ -79,7 +79,7 @@ spring:
 ...
 ```
 
-修改阿里OSS配置：`E:\code\Project\coj\coj-backend\src\main\java\com\cjj\coj\utils\AliOSSUtil.java`的数据库配置（15-18行）
+修改阿里OSS配置：`coj-backend\src\main\java\com\cjj\coj\utils\AliOSSUtil.java`的数据库配置（15-18行）
     
 ```java
 private static final String ACCESS_KEY_ID = "你的oss key id";
