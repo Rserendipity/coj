@@ -7,6 +7,7 @@ public class CommentsVo {
     private String id;
     private String account;
     private String nickname;
+    private String avatar;
     private String content;
     private String createTime;
 }

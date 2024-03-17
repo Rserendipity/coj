@@ -4,18 +4,16 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.StatsCmd;
-import com.github.dockerjava.api.model.*;
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.HostConfig;
+import com.github.dockerjava.api.model.Statistics;
+import com.github.dockerjava.api.model.Volume;
 import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.command.AttachContainerResultCallback;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Statistics;
-import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.command.StatsCmdImpl;
 
 public class Demo {
 

@@ -3,7 +3,6 @@ package com.cjj.coj.codesandbox.service.impl.dockercodebox.impl;
 import com.cjj.coj.codesandbox.model.ExecuteResult;
 import com.cjj.coj.codesandbox.service.impl.dockercodebox.DockerCompileAndRun;
 
-import java.io.IOException;
 import java.util.List;
 
 public class CDockerCompileAndRun implements DockerCompileAndRun {

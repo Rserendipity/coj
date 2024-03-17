@@ -13,14 +13,18 @@ import com.cjj.coj.modle.dto.user.UserUpdateInfoDto;
 import com.cjj.coj.modle.entity.User;
 import com.cjj.coj.modle.vo.user.UserVo;
 import com.cjj.coj.service.UserService;
+import com.cjj.coj.utils.AliOSSUtil;
 import com.cjj.coj.utils.JwtUtil;
 import com.cjj.coj.utils.UserPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -125,5 +129,15 @@ public class UserServiceImpl implements UserService {
     public ResultBody getUserInfo(Long id) {
         User user = userMapper.selectOne(new QueryWrapper<User>().eq("id", id));
         return ResultBody.success(new UserVo(user));
+    }
+
+    @Override
+    public ResultBody uploadAvatar(Long id, MultipartFile file) throws IOException {
+        String filename = UUID.randomUUID().toString() + ".jpg";
+        String url = AliOSSUtil.UploadObject(filename, file.getInputStream());
+        User user = userMapper.selectById(id);
+        user.setAvatar(url);
+        userMapper.updateById(user);
+        return ResultBody.success(url);
     }
 }

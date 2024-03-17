@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface CommentMapper extends BaseMapper<Comments> {
-    @Select("select cm.id, u.account, u.nickname, cm.content, cm.create_time\n" +
+    @Select("select cm.id, u.account, u.nickname, u.avatar, cm.content, cm.create_time\n" +
             "from comments as cm\n" +
             "         join coj.user u on u.id = cm.user_id\n" +
             "where cm.problem_id = #{problemId}")

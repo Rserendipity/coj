@@ -10,6 +10,9 @@ import com.cjj.coj.service.UserService;
 import com.cjj.coj.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
@@ -84,13 +87,14 @@ public class UserController {
     }
 
     @PostMapping("/update_avatar")
-    public ResultBody updateAvatar(@RequestBody UserUpdateInfoDto dto) {
+    public ResultBody updateAvatar(MultipartFile file) throws IOException {
         User user = (User) ThreadLocalUtil.get();
-        if (!user.getAccount().equals(dto.getAccount())) {
-            return ResultBody.fail(ReturnCodeEnum.USER_INFO_ERROR);
+
+        if (file.getSize() > 1024 * 1024) { // 大于1MB
+            return ResultBody.fail(ReturnCodeEnum.USER_AVATAR_TOO_BIG);
         }
 
-        return userService.updateUserInfo(dto);
+        return userService.uploadAvatar(user.getId(), file);
     }
 
 }

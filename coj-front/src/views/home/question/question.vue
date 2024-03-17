@@ -117,8 +117,8 @@ const problemView = computed(() => {
       </template>
     </el-input>
     <el-radio-group v-model="search.type" label="label position">
-      <el-radio-button label="problem">题目名</el-radio-button>
-      <el-radio-button label="tags">标签名</el-radio-button>
+      <el-radio-button value="problem">题目名</el-radio-button>
+      <el-radio-button value="tags">标签名</el-radio-button>
     </el-radio-group>
   </el-row>
 

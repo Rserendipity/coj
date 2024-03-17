@@ -14,7 +14,8 @@ public enum ReturnCodeEnum {
     USER_NOT_LOGIN(2003, "用户未登录"),
     USER_NOT_ADMIN(2004, "用户非管理员"),
     USER_NOT_MATCH(2005, "用户不匹配"),
-    USER_EXISTS(2006, "用户已存在，请前往登录"),
+    USER_AVATAR_TOO_BIG(2006, "用户头像过大，请上传小于1M的图片"),
+    USER_EXISTS(2007, "用户已存在，请前往登录"),
 
     // 题目
     QUESTION_NOT_EXIST(3000, "题目不存在"),

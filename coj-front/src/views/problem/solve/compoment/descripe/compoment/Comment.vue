@@ -92,7 +92,8 @@ const isContentOverflow = (content) => {
 
     <el-card v-for="item in marks" :ket="item.id" shadow="hover">
       <el-row style="margin-bottom: 10px">
-        <el-text>
+        <el-avatar :src="item.avatar" :size="20"/>
+        <el-text style="margin-left: 10px">
           <h3>
             {{ userNameView(item) }}
           </h3>

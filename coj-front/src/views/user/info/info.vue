@@ -22,10 +22,10 @@ const form = reactive({
 });
 
 const submit = () => {
-  updateUserInfoAPI(form).then(({ data }) => {
+  updateUserInfoAPI(form).then(({data}) => {
     if (data.code === 0) {
       ElMessage.success("修改成功");
-      getUserInfoAPI().then(({ data }) => {
+      getUserInfoAPI().then(({data}) => {
         userStore.userinfo = data.data;
         form.account = data.data.account;
         form.nickname = data.data.nickname;
@@ -49,7 +49,7 @@ const logout = () => {
 }
 
 const submitPassword = () => {
-  updatePasswordAPI(form).then(({ data }) => {
+  updatePasswordAPI(form).then(({data}) => {
     if (data.code === 0) {
       ElMessage.success("修改成功");
       ElMessage.warning("请重新登录");
@@ -90,20 +90,40 @@ const validatePass2 = (rule, value, callback) => {
 };
 
 const rules = reactive({
-  rawPass: [{ validator: checkPass, trigger: 'blur' }],
-  newPass: [{ validator: validatePass, trigger: 'blur' }],
-  confirmPass: [{ validator: validatePass2, trigger: 'blur' }],
+  rawPass: [{validator: checkPass, trigger: 'blur'}],
+  newPass: [{validator: validatePass, trigger: 'blur'}],
+  confirmPass: [{validator: validatePass2, trigger: 'blur'}],
 });
+
+const reloadUserInfo = async () => {
+  const ret = await getUserInfoAPI();
+  if (ret.data.code === 0) {
+    userStore.userinfo = ret.data.data;
+  }
+}
+
+const checkImageInfo = (rawFile) => {
+  if (rawFile.size / 1024 / 1024 > 1) {
+    ElMessage.warning("图片太大")
+    return false;
+  }
+  if (!['image/jpeg', 'image/png'].includes(rawFile.type)) {
+    ElMessage.warning("图片类型不支持")
+    return false;
+  }
+
+  return true;
+}
 
 </script>
 
 <template>
   <el-header>
-    <COJ_Header />
+    <COJ_Header/>
   </el-header>
 
   <Container>
-    <el-tabs class="el-tabs" type="border-card" v-model="info">
+    <el-tabs class="el-tabs" v-model="info" tab-position="left">
       <el-tab-pane label="个人信息" name="info">
         <el-form label-width="100px">
           <el-form-item label="用户名">
@@ -133,7 +153,7 @@ const rules = reactive({
 
           <el-form-item label="确认密码" prop="confirmPass">
             <el-input v-model="form.confirmPass" autocomplete="off" show-password type="password"
-              @keyup.enter.native="submitPassword" />
+                      @keyup.enter.native="submitPassword"/>
           </el-form-item>
 
           <el-form-item>
@@ -142,40 +162,67 @@ const rules = reactive({
         </el-form>
       </el-tab-pane>
 
-      <el-tab-pane label="上传头像" name="avatar">
-        <el-form label-width="100px">
-          <el-text>
-            开发中...
-          </el-text>
-          
-          <!-- <el-form-item label="头像">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="form.avatar" :src="form.avatar" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="uploadAvatar">上 传</el-button>
-          </el-form-item> -->
+      <el-tab-pane label="修改头像" name="avatar">
+        <!-- 当前头像-->
+        <div class="avatar">
+          <el-image :src="userStore.userinfo.avatar" fit="cover" class="avatar"
+                    @error="reloadUserInfo"/>
+        </div>
+
+        <el-form label-width="200px" style="padding: 0 50px 0 40px">
+          <el-upload
+              class="upload-demo"
+              drag
+              action="api/user/update_avatar"
+              name="file"
+              :headers="{'Authorization': httpInstance.defaults.headers.Authorization}"
+              :on-success="response => userStore.userinfo.avatar = response.data.data"
+              :before-upload="checkImageInfo"
+          >
+            <div style="margin-bottom: 10px">
+              <i class="iconfont icon-shangchuan" style="font-size: 40px"/>
+            </div>
+            <div class="el-upload__text">
+              拖拽文件到此处 或<em>点此上传</em>
+            </div>
+            <template #tip>
+              <div class="el-upload__tip">
+                仅支持 JPG / PNG 文件，且不超过 1Mb
+              </div>
+            </template>
+          </el-upload>
+
         </el-form>
       </el-tab-pane>
-
-
     </el-tabs>
   </Container>
 </template>
 
 <style scoped>
 .el-tabs {
-  width: 500px;
+  height: 100%;
+  width: 100%;
   margin: 0 auto;
 }
+
 .el-input {
   width: 300px;
 }
+
+.avatar {
+  display: flex;
+  margin: 30px 0;
+}
+
+.avatar > .el-image {
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+}
+
+.avatar > .el-text {
+  margin: 0 auto;
+  padding: 50px;
+}
+
 </style>

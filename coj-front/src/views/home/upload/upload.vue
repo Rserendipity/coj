@@ -100,9 +100,9 @@ const btnView = computed(() => {
 
       <el-form-item label="难 度" label-width="70px">
         <el-radio-group v-model="question.level" label="label position">
-          <el-radio-button label="简单">简单</el-radio-button>
-          <el-radio-button label="中等">中等</el-radio-button>
-          <el-radio-button label="困难">困难</el-radio-button>
+          <el-radio-button value="简单">简单</el-radio-button>
+          <el-radio-button value="中等">中等</el-radio-button>
+          <el-radio-button value="困难">困难</el-radio-button>
         </el-radio-group>
       </el-form-item>
 
